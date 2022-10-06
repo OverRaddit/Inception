@@ -1,0 +1,9 @@
+#FROM : 이미지를 생성할 때 사용할 기반 이미지를 지정
+FROM nginx:1.22.0-alpine
+
+#RUN : 이미지를 생성할 때 실행할 코드를 지정한다. ex)패키지 설치 or 파일권한변경
+
+#WORKDIR : 작업 디렉토리를 지정. 없으면 생성. 이후 명령어는 해당 디렉토리에서.
+
+#COPY : 파일이나 폴더를 이미지에 복사한다.
+COPY static-html-directory /usr/share/nginx/html
