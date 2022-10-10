@@ -20,5 +20,13 @@ docker stop $(docker ps -aq)
 docker system prune -a
 
 # 특정 컨테이너에 명령어 실행하기
-
 docker exec -it 04f94334b838 bash
+## 컨테이너의 배쉬 실행
+docker exec -it `docker ps | awk 'NR == 2{print $1}'` bash
+
+# docker-compose.yml을 이용하기
+(해당파일이 있는 위치에서)
+docker-compose up
+
+## 컨테이너 맨위에있는거 삭제
+docker rm `docker ps | awk 'NR == 2{print $1}'`
