@@ -18,10 +18,20 @@ RUN apk add mariadb mariadb-common mariadb-client
 VOLUME /tools
 
 # mysql DB를 초기화 해준다.
-#CMD ["/etc/init.d/mariadb", "setup;"]
+#RUN /etc/init.d/mariadb setup
 
 # MariaDB 서비스 시작하기
-#CMD ["rc-service", "mariadb", "start;"]
+# 왜 그런지 모르겠는데,, 이걸 배쉬로 직접 입력해야 mariadb가 실행된다.
+#RUN rc-service mariadb restart
+
+#ENTRYPOINT [ "rc-service", "mariadb", "restart", ";" , "mariadb" ]
+COPY gshim.sh /
+
+RUN chmod +x /gshim.sh
+
+RUN apk add tini -y
+
+ENTRYPOINT [ "/sbin/tini", "---", "./gshim.sh"];
 
 EXPOSE 3306/tcp
 
@@ -30,8 +40,9 @@ EXPOSE 3306/tcp
 
 # # starting openrc
 # mkdir -p run/nginx
-# openrc default
-# openrc boot
+
 # # start services
 # rc-service php-fpm7 start
 # rc-service nginx start
+
+# mysql 데몬을 기동한다.
