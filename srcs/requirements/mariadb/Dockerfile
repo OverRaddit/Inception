@@ -13,6 +13,10 @@ RUN apk add openrc
 RUN apk add bash
 RUN apk add mariadb mariadb-common mariadb-client
 
+# db 데이터를 담을 volume 선언
+# 매번 새로 생성하는건가?
+VOLUME /tools
+
 # mysql DB를 초기화 해준다.
 #CMD ["/etc/init.d/mariadb", "setup;"]
 
