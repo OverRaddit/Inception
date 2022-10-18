@@ -7,10 +7,8 @@
 FROM alpine:3.14
 
 #RUN : 이미지를 생성할 때 실행할 코드를 지정한다. ex)패키지 설치 or 파일권한변경
-RUN apk update
-
-RUN apk upgrade
-RUN apk add bash
+RUN apk update && apk upgrade
+#RUN apk php7 php7-fpm
 
 RUN apk add nginx
 
