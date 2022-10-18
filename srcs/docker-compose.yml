@@ -1,18 +1,20 @@
 version: '3'
+#========================================
 services:
-  # database:
-  #   # Dockerfile이 있는 위치
-  #   build: ./requirements/mariadb
-  #   tty: true
-  #   # 내부에서 개방할 포트 : 외부에서 접근할 포트
-  #   # ports:
-  #   #   - "3306:3306"
-  #   #WordPress Database를 포함하는 볼륨1
-  #   # volumes:
-  #   #   - wp_db:/home/mariadb
+  database:
+    # Dockerfile이 있는 위치
+    build: ./requirements/mariadb
+    tty: true
+    # 내부에서 개방할 포트 : 외부에서 접근할 포트
+    # ports:
+    #   - "3306:3306"
+    #WordPress Database를 포함하는 볼륨1
+    volumes:
+      - type: bind
+        source: ./somedir
+        target: /somedir
 
-
-
+  #========================================
   wordpress:
     build: ./requirements/wordpress
     # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
@@ -24,19 +26,21 @@ services:
     tty: true
      #WordPress websites를 포함하는 볼륨2
     volumes:
-    - websites:/home/mariadb
-
+      - type: bind
+        source: ./somedir
+        target: /somedir
+  #========================================
   nginx:
     build: ./requirements/nginx
-    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
-    # volumes:
-    #   - ./somedir:/home/node/app
     ports:
       - "443:80"
-
+    #tty: true
     volumes:
-    - websites:/home/mariadb
-
+      - type: bind
+        source: ./somedir
+        target: /somedir
+#========================================
 volumes:
+  wp_db:
   websites:
 

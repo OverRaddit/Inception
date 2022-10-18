@@ -1,0 +1,1 @@
+this is nginx file from host machine
