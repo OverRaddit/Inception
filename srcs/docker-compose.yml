@@ -1,4 +1,5 @@
 version: '3'
+#========================================
 services:
   database:
     # Dockerfile이 있는 위치
@@ -9,10 +10,11 @@ services:
     #   - "3306:3306"
     #WordPress Database를 포함하는 볼륨1
     volumes:
-      - wp_db:/home/mariadb
+      - type: bind
+        source: ./somedir
+        target: /somedir
 
-
-
+  #========================================
   wordpress:
     build: ./requirements/wordpress
     # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
@@ -23,18 +25,21 @@ services:
       - DBHOST=database
      #WordPress websites를 포함하는 볼륨2
     volumes:
-    - websites:/home/mariadb
-
+      - type: bind
+        source: ./somedir
+        target: /somedir
+  #========================================
   nginx:
     build: ./requirements/nginx
-    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
-    # volumes:
-    #   - ./somedir:/home/node/app
     ports:
       - "443:80"
     #tty: true
-
-  volumes:
-    wp_db:
-    websites:
+    volumes:
+      - type: bind
+        source: ./somedir
+        target: /somedir
+#========================================
+volumes:
+  wp_db:
+  websites:
 
