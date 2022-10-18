@@ -11,13 +11,14 @@ RUN apk update && apk upgrade
 #RUN apk php7 php7-fpm
 
 RUN apk add nginx
+RUN apk add bash
 
 #WORKDIR : 작업 디렉토리를 지정. 없으면 생성. 이후 명령어는 해당 디렉토리에서.
 
 #COPY : 파일이나 폴더를 이미지에 복사한다.
 #COPY ./conf/gshim_conf.conf /etc/nginx/sites-available/default
-COPY ./conf/gshim_conf.conf /etc/nginx/http.d/default.conf
-
+#COPY ./conf/gshim_conf.conf /etc/nginx/http.d/default.conf
+ENTRYPOINT [ "bash" ]
 #ENV : 이미지에서 사용할 환경 변수 값을 지정한다.
 
 #ENTRYPOINT : 컨테이너를 구동할 때 실행할 명령어를 지정한다.
