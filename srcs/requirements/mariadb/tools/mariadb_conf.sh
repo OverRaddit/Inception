@@ -24,5 +24,5 @@ mysql -e "GRANT ALL ON *.* TO 'gshim'@'%'";
 mysql -e "FLUSH PRIVILEGES";
 mysql -e "Use mysql;SELECT host, user from user";
 
-mariadb
+mysqld
 bash # 보험용

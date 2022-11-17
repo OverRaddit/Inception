@@ -3,36 +3,37 @@ version: '3.2'
 services:
   mariadb:
     container_name: mariadb
+    image: mariadb
     build: ./requirements/mariadb
-    tty: true
+    tty: true # 나중에 지울 것.
     expose:
       - "3306"
-    #WordPress Database를 포함하는 볼륨1
+    #WordPress Database를 포함하는 볼륨
     volumes:
-    #   - type: bind
-    #     source: ./somedir
-    #     target: /somedir
-      - type: volume
-        source: db_volume
-        target: /home/gshim/data
+      - type: bind
+        source: /home/gshim/data/db_volume
+        target: /var/lib/mysql
+      # - type: volume
+      #   source: db_volume
+      #   target: /home/gshim/data
     networks:
       - intra
   #========================================
   wordpress:
     container_name: wordpress
+    image: wordpress
     build: ./requirements/wordpress
     depends_on:
     - mariadb
     expose:
       - "9000"
-    #tty: true
     volumes:
-      # - type: bind
-      #   source: ./somedir
-      #   target: /somedir
-      - type: volume
-        source: wordpress_volume
+      - type: bind
+        source: /home/gshim/data/wp_volume
         target: /home/gshim/data
+      # - type: volume
+      #   source: wp_volume
+      #   target: /home/gshim/data
     env_file:
       - ./.env
     networks:
@@ -40,6 +41,7 @@ services:
   #========================================
   nginx:
     container_name: nginx
+    image: nginx
     build: ./requirements/nginx
     depends_on:
       - mariadb
@@ -47,18 +49,18 @@ services:
     ports:
       - "443:443"
     volumes:
-      # - type: bind
-      #   source: ./somedir
-      #   target: /somedir
-      - type: volume
-        source: wordpress_volume
+      - type: bind
+        source: /home/gshim/data
         target: /var/www/html
+      # - type: volume
+      #   source: wp_volume
+      #   target: /var/www/html
     networks:
       - intra
 #========================================
 volumes:
   db_volume:
-  wordpress_volume:
+  wp_volume:
 networks:
   intra:
     driver: bridge
