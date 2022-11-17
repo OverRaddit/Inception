@@ -11,30 +11,27 @@
 FROM alpine:3.14
 
 #RUN : 이미지를 생성할 때 실행할 코드를 지정한다. ex)패키지 설치 or 파일권한변경
-RUN apk update
-
-RUN apk upgrade
-RUN apk add bash
-
-RUN apk add nginx
+RUN apk update && apk upgrade
+RUN apk add openssl nginx tini bash
 
 #WORKDIR : 작업 디렉토리를 지정. 없으면 생성. 이후 명령어는 해당 디렉토리에서.
 
 #COPY : 파일이나 폴더를 이미지에 복사한다.
-#COPY ./conf/gshim_conf.conf /etc/nginx/sites-available/default
 COPY ./conf/gshim_conf.conf /etc/nginx/http.d/default.conf
+COPY ./conf/nginx.start.sh ./nginx.start.sh
 
-#ENV : 이미지에서 사용할 환경 변수 값을 지정한다.
+RUN chmod +x nginx.start.sh
 
-#ENTRYPOINT : 컨테이너를 구동할 때 실행할 명령어를 지정한다.
+ENTRYPOINT ["/sbin/tini", "--", "./nginx.start.sh"];
 
-EXPOSE 80/tcp
-
+# CMD는 언제 돌아가게됨?
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 
-# docker build -t some-content-nginx .
-# docker run --name some-nginx -d -p 8080:80 some-content-nginx
-
-# /etc/nginx : nginx 설정파일이 생성된다./usr/sbin/nginx : nginx 실행 파일nginx 시작 : /usr/sbin/nginxnginx 설정 테스트 : /usr/sbin/nginx -tnginx 종료 : /usr/sbin/nginx -s quitnginx 버전 : /usr/sbin/nginx -v
+# /etc/nginx : nginx 설정파일이 생성된다.
+# /usr/sbin/nginx : nginx 실행 파일
+# nginx 시작 : /usr/sbin/nginx
+# nginx 설정 테스트 : /usr/sbin/nginx -t
+# nginx 종료 : /usr/sbin/nginx -s quit
+# nginx 버전 : /usr/sbin/nginx -v
 
 # https://www.cyberciti.biz/faq/how-to-install-nginx-web-server-on-alpine-linux/

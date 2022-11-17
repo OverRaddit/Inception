@@ -1,46 +1,64 @@
-version: '3'
+version: '3.2'
 #========================================
 services:
-  database:
-    # Dockerfile이 있는 위치
+  mariadb:
+    container_name: mariadb
     build: ./requirements/mariadb
     tty: true
-    # 내부에서 개방할 포트 : 외부에서 접근할 포트
-    # ports:
-    #   - "3306:3306"
+    expose:
+      - "3306"
     #WordPress Database를 포함하는 볼륨1
     volumes:
-      - type: bind
-        source: ./somedir
-        target: /somedir
-
+    #   - type: bind
+    #     source: ./somedir
+    #     target: /somedir
+      - type: volume
+        source: db_volume
+        target: /home/gshim/data
+    networks:
+      - intra
   #========================================
   wordpress:
+    container_name: wordpress
     build: ./requirements/wordpress
-    # 연결할 외부 디렉토리 : 컨테이너 내 디렉토리
-    # ports:
-    #   - "9000:9000"
-    # 환경변수 설정
-    environment:
-      - DBHOST=database
-    tty: true
-     #WordPress websites를 포함하는 볼륨2
-    volumes:
-      - type: bind
-        source: ./somedir
-        target: /somedir
-  #========================================
-  nginx:
-    build: ./requirements/nginx
-    ports:
-      - "443:80"
+    depends_on:
+    - mariadb
+    expose:
+      - "9000"
     #tty: true
     volumes:
-      - type: bind
-        source: ./somedir
-        target: /somedir
+      # - type: bind
+      #   source: ./somedir
+      #   target: /somedir
+      - type: volume
+        source: wordpress_volume
+        target: /home/gshim/data
+    env_file:
+      - ./.env
+    networks:
+      - intra
+  #========================================
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    depends_on:
+      - mariadb
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      # - type: bind
+      #   source: ./somedir
+      #   target: /somedir
+      - type: volume
+        source: wordpress_volume
+        target: /var/www/html
+    networks:
+      - intra
 #========================================
 volumes:
-  wp_db:
-  websites:
-
+  db_volume:
+  wordpress_volume:
+networks:
+  intra:
+    driver: bridge
