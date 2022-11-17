@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gshim <gshim@student.42.fr>                +#+  +:+       +#+         #
+#    By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/30 18:07:40 by gshim             #+#    #+#              #
-#    Updated: 2022/10/07 12:48:32 by gshim            ###   ########.fr        #
+#    Updated: 2022/11/15 15:14:22 by gshim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,15 +56,19 @@ $(SRCS_DIR)/%.o	:	$(SRCS_DIR)/%.cpp
 # =============================================================================
 all			:	$(NAME)
 
+mariadb		:
+				@cd ./srcs ; docker-compose exec mariadb bash ; cd ..
 
-bash		:
-				@echo $(YELLOW) "Open bash on first container..." $(EOC)
-				@docker exec -it `docker ps | awk 'NR == 2{print $1}'` bash
-				@echo $(RED) "Bash closed! 🧹 🧹\n" $(EOC)
+nginx		:
+				@cd ./srcs ; docker-compose exec nginx bash ; cd ..
+
+wordpress		:
+				@cd ./srcs ; docker-compose exec wordpress bash ; cd ..
 
 fclean		:
 				@echo $(YELLOW) "Removing All Docker things..." $(EOC)
 				@echo y | docker system prune -a
+				@docker volume prune
 				@echo $(RED) "All Docker things are removed! 🗑 🗑\n" $(EOC)
 
 re			: fclean all

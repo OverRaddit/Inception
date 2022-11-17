@@ -7,34 +7,19 @@
 FROM alpine:3.14
 
 # 필요한 패키지를 설치한다.
-RUN apk update
-RUN apk upgrade
-RUN apk add openrc
-RUN apk add bash
-RUN apk add mariadb mariadb-common mariadb-client
-
-# db 데이터를 담을 volume 선언
-# 매번 새로 생성하는건가?
-VOLUME /tools
-
-# mysql DB를 초기화 해준다.
-#RUN /etc/init.d/mariadb setup
-
-# MariaDB 서비스 시작하기
-# 왜 그런지 모르겠는데,, 이걸 배쉬로 직접 입력해야 mariadb가 실행된다.
-#RUN rc-service mariadb restart
+RUN apk update && apk upgrade
+RUN apk add openrc bash mariadb mariadb-common mariadb-client tini
 
 #ENTRYPOINT [ "rc-service", "mariadb", "restart", ";" , "mariadb" ]
-COPY gshim.sh /
+COPY /tools/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
+COPY /tools/mariadb_conf.sh /
 
-RUN chmod +x /gshim.sh
+RUN chmod +x /mariadb_conf.sh
 
-RUN apk add tini -y
+ENTRYPOINT ["/sbin/tini", "--", "./mariadb_conf.sh"];
 
-ENTRYPOINT [ "/sbin/tini", "---", "./gshim.sh"];
-
-EXPOSE 3306/tcp
-
+EXPOSE 3306
+#VOLUME [ “/sys/fs/cgroup” ]
 ## Helpful Tutorial
 # https://techviewleo.com/how-to-install-mariadb-on-alpine-linux/
 
