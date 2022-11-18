@@ -38,7 +38,7 @@ bind-address=0.0.0.0
 # If you use the same .cnf file for MySQL and MariaDB,
 # you can put MariaDB-only options here
 [mariadb]
-datadir=/home/gshim/data
+#datadir=/home/gshim/data
 
 # This group is only read by MariaDB-10.5 servers.
 # If you use the same .cnf file for MariaDB of different versions,

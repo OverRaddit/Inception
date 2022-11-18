@@ -206,3 +206,9 @@ mysqld_safe가 뭐지? 찾아봐야겠다.
 - volume 이름지정 + bind방식 사용
 - DB컨테이너가 재실행되도 연결이 되도록 고치기
 - DB에 wordpress 2개의 계정이 추가되는지 확인하기
+
+- 왜 mariadb는 껐다키면 DB데몬과의 연결을 할수 없지?
+
+
+mysqld 치면 [Warning] Setting lower_case_table_names=2 because file system for /var/lib/mysql/ is case insensitive
+mysqld: Please consult the Knowledge Base to find out how to run mysqld as root!

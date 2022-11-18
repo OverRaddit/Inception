@@ -6,7 +6,7 @@
 #    By: gshim <gshim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/30 18:07:40 by gshim             #+#    #+#              #
-#    Updated: 2022/11/17 18:28:10 by gshim            ###   ########.fr        #
+#    Updated: 2022/11/18 11:56:02 by gshim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,8 @@ OBJS		=	$(SRCS:.cpp=.o)
 # =============================================================================
 $(NAME)			:
 	@echo $(YELLOW) "Composing docker system from docker-compose.yml..." $(EOC)
-	@mkdir -p /home/gshim/data/db_volume /home/gshim/data/wp_volume
-	@echo "127.0.0.1	gshim.42.fr" >> /etc/hosts
+#	@mkdir -p /home/gshim/data/db_volume /home/gshim/data/wp_volume
+#	@echo "127.0.0.1	gshim.42.fr" >> /etc/hosts
 	@docker-compose -f ./srcs/docker-compose.yml up --build
 	@echo $(GREEN) "Docker compose complete!" $(EOC)
 
