@@ -34,7 +34,7 @@ CDEBUG		=	-g -fsanitize=address
 # =============================================================================
 # File Variables
 # =============================================================================
-NAME		=	webserv
+NAME		=	Inception
 
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRC_LIST))
 OBJS		=	$(SRCS:.cpp=.o)
@@ -44,7 +44,7 @@ OBJS		=	$(SRCS:.cpp=.o)
 # =============================================================================
 $(NAME)			:
 	@echo $(YELLOW) "Composing docker system from docker-compose.yml..." $(EOC)
-#	@mkdir -p /home/gshim/data/db_volume /home/gshim/data/wp_volume
+	@mkdir -p /home/gshim/data/db_volume /home/gshim/data/wp_volume
 #	@echo "127.0.0.1	gshim.42.fr" >> /etc/hosts
 	@docker-compose -f ./srcs/docker-compose.yml up --build
 	@echo $(GREEN) "Docker compose complete!" $(EOC)

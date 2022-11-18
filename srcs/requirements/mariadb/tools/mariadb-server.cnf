@@ -4,14 +4,11 @@
 
 # this is read by the standalone daemon and embedded servers
 [server]
-
+socket=/var/lib/mysql/mysql.sock
 # this is only for the mysqld standalone daemon
 [mysqld]
 #skip-networking
 bind-address=0.0.0.0
-
-#gshim's work
-#skip-grant-tables
 
 # Galera-related settings
 [galera]

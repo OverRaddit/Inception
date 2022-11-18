@@ -11,11 +11,13 @@ services:
     #WordPress Database를 포함하는 볼륨
     volumes:
       - type: bind
-        source: /Users/simgeon-u/Desktop/SEOUL42/Inception/data/db_volume
+        source: /home/gshim/data/db_volume
         target: /var/lib/mysql
       # - type: volume
       #   source: db_volume
       #   target: /home/gshim/data
+    env_file:
+      - ./.env
     networks:
       - intra
   #========================================
@@ -29,7 +31,7 @@ services:
       - "9000"
     volumes:
       - type: bind
-        source: /Users/simgeon-u/Desktop/SEOUL42/Inception/data/wp_volume
+        source: /home/gshim/data/wp_volume
         target: /var/www/html
       # - type: volume
       #   source: wp_volume
@@ -50,11 +52,13 @@ services:
       - "443:443"
     volumes:
       - type: bind
-        source: /Users/simgeon-u/Desktop/SEOUL42/Inception/data/wp_volume
+        source: /home/gshim/data/wp_volume
         target: /var/www/html
       # - type: volume
       #   source: wp_volume
       #   target: /var/www/html
+    env_file:
+      - ./.env
     networks:
       - intra
 #========================================
