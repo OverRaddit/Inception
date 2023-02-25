@@ -20,4 +20,4 @@ ENTRYPOINT ["/sbin/tini", "--", "./mariadb_conf.sh"]
 
 CMD ["/usr/bin/mysqld", "--user=root"]
 
-EXPOSE 330
+EXPOSE 3306
