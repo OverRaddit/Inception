@@ -9,7 +9,7 @@ if [ ! -d /var/www/html/wp-admin ]; then
 	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	chmod +x wp-cli.phar
 	mv wp-cli.phar /usr/local/bin/wp
-	wp core download --version=6.0.2 --locale=ko_KR --path=/var/www/html
+	wp core download --version=latest --path=/var/www/html # --locale=ko_KR
 
 	# wordpress에서 필요한 database를 저장 (유저정보, 데이터데이스 이름) -> wp.config.php파일 생성
 	wp config create --force --dbname=$MYSQL_DATABASE --dbuser=$MYSQL_USR --dbpass=$MYSQL_PASSWORD --dbhost=$MYSQL_HOST --path=/var/www/html
