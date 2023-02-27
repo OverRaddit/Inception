@@ -10,12 +10,10 @@ if [ ! -d /var/lib/mysql/$MYSQL_DATABASE ]; then
 	# --datadir= : Directory where the data is stored.
 	mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
-	mkdir -p /run/mysqld
 	# why do this?
 	# this change [/run/mysqld]
 	#chown -R mysql:mysql /var/lib/mysql /run/mysqld
-	chown -R mysql:mysql /run/mysqld
-
+#RUN chown -R mariadb:mariadb /var/lib/mysql /var/run/mysqld
 	# Secure Installation...?
 	mysqld --user=mysql --datadir=/var/lib/mysql --bootstrap << EOF
 -- Reload Privilege Tables
@@ -35,8 +33,6 @@ GRANT ALL ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWO
 -- Reload Privilege Tables
 FLUSH PRIVILEGES;
 EOF
-
-mysqld --user=mysql
 # 	Use mysql;
 # 	FLUSH PRIVILEGES;
 # 	SET PASSWORD FOR 'root'@localhost = PASSWORD('$MYSQL_ROOT_PASSWORD');
@@ -68,7 +64,4 @@ else
 	echo "You already got your DB!";
 fi
 
-bash # 보험용
-# echo "Execute $@"
-# exec "$@"
-
+mysqld --user=mysql

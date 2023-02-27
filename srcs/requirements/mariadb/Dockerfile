@@ -14,10 +14,12 @@ RUN apk add bash mariadb mariadb-client tini
 COPY /tools/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
 COPY /tools/mariadb_conf.sh /
 
+RUN mkdir -p /var/run/mysqld /var/lib/mysql
+RUN chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 RUN chmod +x /mariadb_conf.sh
 
 ENTRYPOINT ["/sbin/tini", "--", "./mariadb_conf.sh"]
 
-CMD ["/usr/bin/mysqld", "--user=root"]
+CMD ["/usr/bin/mysqld", "--user=mysql"]
 
 EXPOSE 3306

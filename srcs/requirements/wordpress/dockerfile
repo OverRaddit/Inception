@@ -9,7 +9,7 @@ FROM alpine:3.14
 #RUN : 이미지를 생성할 때 실행할 코드를 지정한다. ex)패키지 설치 or 파일권한변경
 RUN apk update && apk upgrade
 RUN apk add tini
-RUN apk add php-common php-fpm php-mysqli php7-phar php7-json php7-iconv
+RUN apk add php7-common php7-fpm php7-mysqli php7-phar php7-json php7-iconv fcgi
 RUN apk add curl
 
 # for debug
@@ -17,8 +17,10 @@ RUN apk add mariadb-client bash
 
 COPY ./tools/wordpress_start.sh /
 COPY ./tools/wordpress_conf.sh /
-COPY ./www.conf /
-RUN chmod +x wordpress_start.sh wordpress_conf.sh
+COPY ./www.conf /etc/php7/php-fpm.d/www.conf
+RUN mkdir -p /var/www/html
+RUN	adduser -S nginx &&	addgroup -S nginx && chown -R nginx:nginx /var/www/html
+RUN chmod +x wordpress_start.sh
 
 EXPOSE 9000
 
